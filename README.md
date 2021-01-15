@@ -27,8 +27,8 @@ This CLI app requires the following NPMs:
 
 ### Click the image to watch the video:
 
-<a href="https://youtu.be/gkSjJvWkkYI" target="_blank"><img src="pic-CLIvideo.PNG" alt="Video Demonstration" width="600"/></a>
+<a href="https://youtu.be/gkSjJvWkkYI" target="_blank"><img src="./img/pic-CLIvideo.png" alt="Video Demonstration" width="600"/></a>
 
 ### Our Expected HTML Output
  
-<img src="pic-output.PNG" alt="My Team page screenshot" width = "600"/>
+<img src="./img/pic-output.png" alt="My Team page screenshot" width = "600"/>
