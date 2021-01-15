@@ -72,7 +72,7 @@ const createEngineer = () => {
             },
             filter: input => {
                 return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
-            },
+            }
         },
         {
             type: "input",
@@ -85,7 +85,7 @@ const createEngineer = () => {
             message: "Enter Github username:",
             validate: input => {
                 return input === '' ? "Noone takes an engineer without a Github seriously..." : true;
-            },
+            }
         },
 
     ]).then(({ name,id,email,github }) => {
@@ -102,12 +102,21 @@ const createManager = () => {
         {
             type: "input",
             name: "name",
-            message: "Enter Manager name:"
+            message: "Enter Manager name:",
+            validate: input => {
+                return input === '' ? "Please enter a name." : true;
+            }
         },
         {
             type: "number",
             name: "id",
-            message: "Enter ID number:"
+            message: "Enter ID number:",
+            validate: input => {
+                return input === '' ? "Please enter an ID." : true;
+            },
+            filter: input => {
+                return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
+            }
         },
         {
             type: "input",
@@ -115,9 +124,12 @@ const createManager = () => {
             message: "Enter email address:"
         },
         {
-            type: "number",
+            type: "input",
             name: "officeNumber",
-            message: "Enter office number:"
+            message: "Enter office number:",
+            validate: input => {
+                return input === '' ? "Locating a manager requires an office number." : true;
+            }
         },
 
     ]).then(({ name,id,email,officeNumber }) => {
@@ -134,12 +146,21 @@ const createIntern = () => {
         {
             type: "input",
             name: "name",
-            message: "Enter Intern name:"
+            message: "Enter Intern name:",
+            validate: input => {
+                return input === '' ? "Please enter a name." : true;
+            }
         },
         {
             type: "number",
             name: "id",
-            message: "Enter ID number:"
+            message: "Enter ID number:",
+            validate: input => {
+                return input === '' ? "Please enter an ID." : true;
+            },
+            filter: input => {
+                return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
+            },
         },
         {
             type: "input",
@@ -149,7 +170,10 @@ const createIntern = () => {
         {
             type: "input",
             name: "school",
-            message: "Enter school attending:"
+            message: "Enter school attending:",
+            validate: input => {
+                return input === '' ? "If no school, enter None or Graduate." : true;
+            },
         }
 
     ]).then(({ name,id,email,school }) => {
