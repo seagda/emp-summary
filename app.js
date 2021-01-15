@@ -11,31 +11,35 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const empArray = [];
-// TODO: use inquirer to ask user questions
+const employees = [];
 
+// const writeFileAsync = util.promisify(fs.writeFile);
 
-function empTypeQuestion(){
+ const whatToDo = () => {
   inquirer.prompt([
     {
         type: "list",
-        message: "what type of employee do you want to create?",
-        name: "empType",
-        choices: ["Engineer", "Intern", "Manager", "Quit"]
+        message: "What do you want to do?",
+        name: "action",
+        choices: ["Add Engineer", "Add Intern", "Add Manager", "Update Team", "Quit"]
     }
 
-  ]).then(({ empType }) => {
-        switch (empType) {
-            case "Engineer":
+  ]).then(({ action }) => {
+        switch (action) {
+            case "Add Engineer":
                 createEngineer();
                 break;
 
-            case "Intern":
+            case "Add Intern":
                 createIntern();
                 break;
 
-            case "Manager":
+            case "Add Manager":
                 createManager();
+                break;
+
+            case "Update Team":
+                generateHTML();
                 break;
 
             case "Quit":
@@ -48,8 +52,8 @@ function empTypeQuestion(){
     })
 };
 
-// TODO: do different things depending on what type of user is selected.
-function createEngineer() {
+const createEngineer = () => {
+//function createEngineer() {
     inquirer.prompt([
         {
             type: "input",
@@ -74,15 +78,14 @@ function createEngineer() {
 
     ]).then(({ name,id,email,github }) => {
         const newEngineer = new Engineer(name,id,email,github);
-        console.log(newEngineer);
-        empArray.push(newEngineer);
+        employees.push(newEngineer);
         console.log("------------\nCurrent employees:\n----------\n");
-        console.log(empArray);
-        empTypeQuestion();
+        console.log(employees);
+        whatToDo();
     })
 };
 
-function createManager() {
+const createManager = () => {
     inquirer.prompt([
         {
             type: "input",
@@ -107,15 +110,14 @@ function createManager() {
 
     ]).then(({ name,id,email,officeNumber }) => {
         const newManager = new Manager(name,id,email,officeNumber);
-        console.log(newManager);
-        empArray.push(newManager);
+        employees.push(newManager);
         console.log("------------\nCurrent employees:\n----------\n");
-        console.log(empArray);
-        empTypeQuestion();
+        console.log(employees);
+        whatToDo();
     })
 };
 
-function createIntern() {
+const createIntern = () => {
     inquirer.prompt([
         {
             type: "input",
@@ -140,35 +142,18 @@ function createIntern() {
 
     ]).then(({ name,id,email,school }) => {
         const newIntern = new Intern(name,id,email,school);
-        console.log(newIntern);
-        empArray.push(newIntern);
+        employees.push(newIntern);
         console.log("------------\nCurrent employees:\n----------\n");
-        console.log(empArray);
-        empTypeQuestion();
+        console.log(employees);
+        whatToDo();
     })
 };
 
-empTypeQuestion();
+const generateHTML= () => {
+    const renderedHTML = render(employees);
+    fs.writeFile(outputPath, renderedHTML, err =>
+    err ? console.error(err) : console.log('File Created')
+)
 
-
-
-// TODO: use Async to wait to render HTML after questions
-
-
-// TODO: create objects for each team member according class/subclass
-
-// TODO: after all employees desired, call the `render` function
-// TODO: push employee objects into an array
-
-// TODO: pass array of employees to `render` function
-
-// TODO: generate and return HTML blocks according to templates
-
-// render(PUT PARAMETERS HERE);
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
+};
+whatToDo();
