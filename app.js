@@ -74,9 +74,9 @@ const quitApplication = () => {
         if (confirm === false) {
             return whatToDo()
         } else {
-            console.log("-".repeat(71));
+            console.log("-".repeat(70));
             console.log("Thank you, and goodbye.");
-            console.log("-".repeat(71)+"\n\n");
+            console.log("-".repeat(70));
         }
 
     });   
@@ -238,7 +238,7 @@ const createIntern = () => {
 const generateHTML= () => {
     const renderedHTML = render(employees);
     fs.writeFile(outputPath, renderedHTML, err =>
-    err ? console.error(err) : console.log('Team file updated.')
+    err ? console.error(err) : console.log('\nTeam file updated.\nThanks, and goodbye.\n\n')
 )
 
 };
