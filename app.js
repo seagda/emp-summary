@@ -66,18 +66,30 @@ const quitApplication = () => {
     inquirer.prompt([
         {
             type: "confirm",
+            name: "confirm",
             message: "Quit without updating Team Page first? Your data will be lost.",
-            name: "exit",
         }
-    ]).then(({ exit }) => {
-            if (true) {
-                console.log("Thank you. Goodbye.");
-            } else {
-                whatToDo();
-            }
+ 
+    ]).then(({ confirm }) => {
+        if (confirm === false) {
+            return whatToDo()
+        } else {
+            console.log("-".repeat(71));
+            console.log("Thank you, and goodbye.");
+            console.log("-".repeat(71)+"\n\n");
+        }
 
-        });   
+    });   
 };
+
+const returnEmployees = () => {
+    console.log("\n")
+    console.log("-".repeat(71));
+    console.log("|"+" ".repeat(10)+"You are adding the following employees:"+" ".repeat(20)+"|");
+    console.log("-".repeat(71)+"\n\n");
+    console.log(employees);
+    console.log("-".repeat(71)+"\n\n");  
+} 
 
 const createEngineer = () => {
     inquirer.prompt([
@@ -105,7 +117,7 @@ const createEngineer = () => {
             name: "email",
             message: "Enter Employee email address:",
             validate: input  => {
-                const regexEml = /.+@.+\..+/;
+                const regexEml = /^\S+@[^@\s]+\.[^@\s]+$/;
                 return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email.";
                 }
         },
@@ -124,8 +136,7 @@ const createEngineer = () => {
     ]).then(({ name,id,email,github }) => {
         const newEngineer = new Engineer(name,id,email,github);
         employees.push(newEngineer);
-        console.log("------------\nCurrent employees:\n----------\n");
-        console.log(employees);
+        returnEmployees();
         whatToDo();
     })
 };
@@ -172,8 +183,7 @@ const createManager = () => {
     ]).then(({ name,id,email,officeNumber }) => {
         const newManager = new Manager(name,id,email,officeNumber);
         employees.push(newManager);
-        console.log("------------\nCurrent employees:\n----------\n");
-        console.log(employees);
+        returnEmployees();
         whatToDo();
     })
 };
@@ -204,8 +214,8 @@ const createIntern = () => {
             name: "email",
             message: "Enter email address:",
             validate: input  => {
-                const regexEml = /.+@.+\..+/;
-                return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email";
+                const regexEml = /^\S+@[^@\s]+\.[^@\s]+$/;
+                return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email.";
                 }
         },
         {
@@ -220,8 +230,7 @@ const createIntern = () => {
     ]).then(({ name,id,email,school }) => {
         const newIntern = new Intern(name,id,email,school);
         employees.push(newIntern);
-        console.log("------------\nCurrent employees:\n----------\n");
-        console.log(employees);
+        returnEmployees();
         whatToDo();
     })
 };
@@ -233,4 +242,5 @@ const generateHTML= () => {
 )
 
 };
+
 whatToDo();
