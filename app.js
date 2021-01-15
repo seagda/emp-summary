@@ -77,7 +77,13 @@ const createEngineer = () => {
         {
             type: "input",
             name: "email",
-            message: "Enter Employee email address:"
+            message: "Enter Employee email address:",
+            validate: input  => {
+                return input === '' ? "Please enter an email." : true;
+                // This is not working. It's not breaking the script, but it's not verifying
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(input.toLowerCase()) ? "not a valid email" : true;
+                }
         },
         {
             type: "input",
