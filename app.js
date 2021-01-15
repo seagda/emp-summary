@@ -11,17 +11,27 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// Array to receive new employee objects
 const employees = [];
 
-// const writeFileAsync = util.promisify(fs.writeFile);
+// Make a pretty header
+console.log("\n")
+console.log("-".repeat(71));
+console.log("|"+" ".repeat(69)+"|");
+console.log("|"+" ".repeat(20)+"Welcome to the Team Generator"+" ".repeat(20)+"|");
+console.log("|"+" ".repeat(69)+"|");
+console.log("-".repeat(71)+"\n\n");
 
+
+// Prompt user to take an action
  const whatToDo = () => {
+  
   inquirer.prompt([
     {
         type: "list",
         message: "What do you want to do?",
         name: "action",
-        choices: ["Add Engineer", "Add Intern", "Add Manager", "Update Team", "Quit"]
+        choices: ["Add Engineer", "Add Intern", "Add Manager", "Update Team Page", "Quit Application"]
     }
 
   ]).then(({ action }) => {
@@ -38,12 +48,12 @@ const employees = [];
                 createManager();
                 break;
 
-            case "Update Team":
+            case "Update Team Page":
                 generateHTML();
                 break;
 
-            case "Quit":
-                console.log("Thanks, you're all set.")
+            case "Quit Application":
+                quitApplication();
                 break;
             
             default:
@@ -52,8 +62,24 @@ const employees = [];
     })
 };
 
+const quitApplication = () => {
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Quit without updating Team Page first? Your data will be lost.",
+            name: "exit",
+        }
+    ]).then(({ exit }) => {
+            if (true) {
+                console.log("Thank you. Goodbye.");
+            } else {
+                whatToDo();
+            }
+
+        });   
+};
+
 const createEngineer = () => {
-//function createEngineer() {
     inquirer.prompt([
         {
             type: "input",
@@ -68,7 +94,7 @@ const createEngineer = () => {
             name: "id",
             message: "Enter Employee ID number:",
             validate: input => {
-                return input === '' ? "Please enter an ID." : true;
+                return input === '' ? "Please enter a numerical ID." : true;
             },
             filter: input => {
                 return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
@@ -79,10 +105,8 @@ const createEngineer = () => {
             name: "email",
             message: "Enter Employee email address:",
             validate: input  => {
-                return input === '' ? "Please enter an email." : true;
-                // This is not working. It's not breaking the script, but it's not verifying
-                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(input.toLowerCase()) ? "not a valid email" : true;
+                const regexEml = /.+@.+\..+/;
+                return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email.";
                 }
         },
         {
@@ -90,8 +114,11 @@ const createEngineer = () => {
             name: "github",
             message: "Enter Github username:",
             validate: input => {
-                return input === '' ? "Noone takes an engineer without a Github seriously..." : true;
+            //    return input === '' ? "Noone takes an engineer without a Github seriously..." : true;
+            const regexGitHub = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
+            return regexGitHub.test(input.toLowerCase()) ? true : "Please enter a valid gitHub username.";
             }
+            
         },
 
     ]).then(({ name,id,email,github }) => {
@@ -127,7 +154,11 @@ const createManager = () => {
         {
             type: "input",
             name: "email",
-            message: "Enter email address:"
+            message: "Enter email address:",
+            validate: input  => {
+                const regexEml = /.+@.+\..+/;
+                return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email";
+                }
         },
         {
             type: "input",
@@ -171,7 +202,11 @@ const createIntern = () => {
         {
             type: "input",
             name: "email",
-            message: "Enter email address:"
+            message: "Enter email address:",
+            validate: input  => {
+                const regexEml = /.+@.+\..+/;
+                return regexEml.test(input.toLowerCase()) ? true : "Please enter a valid email";
+                }
         },
         {
             type: "input",
