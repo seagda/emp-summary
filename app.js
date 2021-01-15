@@ -58,12 +58,21 @@ const createEngineer = () => {
         {
             type: "input",
             name: "name",
-            message: "Enter Employee name:"
+            message: "Enter Employee name:",
+            validate: input => {
+                return input === '' ? "Please enter a name." : true;
+            }
         },
         {
             type: "number",
             name: "id",
-            message: "Enter Employee ID number:"
+            message: "Enter Employee ID number:",
+            validate: input => {
+                return input === '' ? "Please enter an ID." : true;
+            },
+            filter: input => {
+                return Number.isNaN(input) || Number(input) <= 0 ? '' : Number(input)
+            },
         },
         {
             type: "input",
@@ -73,7 +82,10 @@ const createEngineer = () => {
         {
             type: "input",
             name: "github",
-            message: "Enter Github username:"
+            message: "Enter Github username:",
+            validate: input => {
+                return input === '' ? "Noone takes an engineer without a Github seriously..." : true;
+            },
         },
 
     ]).then(({ name,id,email,github }) => {
@@ -152,7 +164,7 @@ const createIntern = () => {
 const generateHTML= () => {
     const renderedHTML = render(employees);
     fs.writeFile(outputPath, renderedHTML, err =>
-    err ? console.error(err) : console.log('File Created')
+    err ? console.error(err) : console.log('Team file updated.')
 )
 
 };
